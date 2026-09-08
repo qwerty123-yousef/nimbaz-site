@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/app/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="نیم‌باز - خرید و فروش و آگهی">
+  <meta name="theme-color" content="#000000">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="نیم‌باز">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>نیم‌باز</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- زودتر شروع به دانلود فایل‌های اصلی کن -->
+  <link rel="preload" href="flutter_bootstrap.js" as="script">
+  <link rel="preload" href="main.dart.js" as="script">
+
+  <style>
+    #nb-loading {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      background: #ffffff;
+      font-family: Tahoma, sans-serif;
+    }
+    #nb-loading img { width: 96px; height: 96px; border-radius: 20px; }
+    #nb-loading .sp {
+      width: 34px; height: 34px;
+      border: 3px solid #e6d8f2;
+      border-top-color: #6a1b9a;
+      border-radius: 50%;
+      animation: nbspin 0.9s linear infinite;
+    }
+    #nb-loading p { margin: 0; color: #6a1b9a; font-size: 14px; }
+    @keyframes nbspin { to { transform: rotate(360deg); } }
+    #nb-help {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      display: none;
+      background: rgba(0,0,0,0.55);
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    #nb-help .box {
+      background: #fff;
+      color: #1f2933;
+      max-width: 420px;
+      width: 100%;
+      border-radius: 16px;
+      padding: 22px 20px 24px;
+      font-family: Tahoma, sans-serif;
+      direction: rtl;
+      line-height: 2.1;
+      font-size: 14px;
+    }
+    #nb-help h3 { margin: 0 0 8px; color: #6a1b9a; font-size: 16px; }
+    #nb-help b { color: #6a1b9a; }
+    #nb-help .ic {
+      display: inline-flex;
+      vertical-align: middle;
+      width: 22px; height: 22px;
+      margin: 0 2px;
+      color: #0a84ff;
+    }
+    #nb-help ol { margin: 6px 0 0; padding-inline-start: 20px; }
+    #nb-help li { margin-bottom: 6px; }
+    #nb-help button {
+      margin-top: 16px;
+      width: 100%;
+      background: #6a1b9a;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 20px;
+      font-family: Tahoma, sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body dir="rtl">
+  <div id="nb-loading">
+    <img src="icons/Icon-192.png" alt="نیم‌باز">
+    <div class="sp" id="nb-sp"></div>
+    <p id="nb-msg">در حال بارگذاری نیم‌باز…</p>
+    <p id="nb-hint" style="display:none;color:#444;font-size:13px;max-width:320px;text-align:center;line-height:2">
+      اگر بالا نیامد، احتمالاً مرورگر یا گوشی شما قدیمی است.<br>
+      لطفاً با گوشی جدیدتر یا مرورگر <b>کروم</b> امتحان کنید.
+    </p>
+    <button id="nb-retry" style="display:none;background:#6a1b9a;color:#fff;border:none;border-radius:10px;padding:10px 24px;font-family:Tahoma;font-size:14px" onclick="location.reload()">تلاش دوباره</button>
+    <a id="nb-diagbtn" href="#" style="display:none;color:#999;font-size:11px;text-decoration:underline">جزئیات فنی</a>
+    <p id="nb-err" style="color:#b00020;font-size:10px;max-width:320px;text-align:left;direction:ltr;display:none;white-space:pre-wrap"></p>
+  </div>
+  <script>
+    (function () {
+      var errs = [];
+      window.addEventListener('error', function (e) {
+        var m = (e && e.message) ? e.message : String(e);
+        if (e && e.filename) m += ' @' + e.filename.split('/').pop();
+        errs.push(m);
+      });
+      window.addEventListener('unhandledrejection', function (e) {
+        errs.push('promise: ' + ((e && e.reason && e.reason.message) || (e && e.reason) || '?'));
+      });
+      window.__nbStage = 'html';
+      var done = false;
+      var t = setInterval(function () {
+        if (document.querySelector('flt-glass-pane') || document.querySelector('flutter-view')) {
+          done = true;
+          var el = document.getElementById('nb-loading');
+          if (el) { el.style.transition = 'opacity .3s'; el.style.opacity = '0'; setTimeout(function () { el.remove(); }, 350); }
+          clearInterval(t);
+        }
+      }, 200);
+      // بعد از ۲۰ ثانیه فقط پیام «کمی صبر کنید» — هنوز چرخ‌فلک می‌چرخد
+      setTimeout(function () {
+        if (done) return;
+        var m = document.getElementById('nb-msg');
+        if (m) m.textContent = 'بار اول کمی طول می‌کشد، لطفاً صبر کنید…';
+      }, 20000);
+      // بعد از ۹۰ ثانیه: پیام دوستانه + دکمه‌ی تلاش دوباره (جزئیات فنی پنهان)
+      setTimeout(function () {
+        if (done) return;
+        clearInterval(t);
+        var sp = document.getElementById('nb-sp'); if (sp) sp.style.display = 'none';
+        document.getElementById('nb-msg').textContent = 'نیم‌باز بالا نیامد';
+        document.getElementById('nb-hint').style.display = 'block';
+        var rb = document.getElementById('nb-retry'); if (rb) rb.style.display = 'block';
+        // گزارش تشخیصی — فقط پشت لینک «جزئیات فنی»
+        var got = {};
+        try {
+          performance.getEntriesByType('resource').forEach(function (r) {
+            var n = r.name.split('/').pop().split('?')[0];
+            if (/dart\.js|bootstrap|canvaskit|skwasm|\.wasm|\.ttf/.test(n)) got[n] = Math.round(r.transferSize / 1024) + 'k/' + Math.round(r.duration) + 'ms';
+          });
+        } catch (e) {}
+        var wgl = '';
+        try { var c = document.createElement('canvas'); wgl = c.getContext('webgl2') ? 'gl2' : (c.getContext('webgl') ? 'gl1' : 'none'); } catch (e) { wgl = 'err'; }
+        var diag = [
+          'stage=' + window.__nbStage,
+          '_flutter=' + (typeof window._flutter),
+          'canvasKit=' + (typeof window.flutterCanvasKit),
+          'webgl=' + wgl,
+          'files=' + JSON.stringify(got),
+          'errs=' + (errs.slice(0, 3).join(' | ') || 'none'),
+          'ua=' + navigator.userAgent
+        ].join('\n');
+        var db = document.getElementById('nb-diagbtn');
+        var er = document.getElementById('nb-err');
+        if (db && er) {
+          db.style.display = 'block';
+          db.onclick = function (ev) { ev.preventDefault(); er.textContent = diag; er.style.display = (er.style.display === 'block' ? 'none' : 'block'); };
+        }
+      }, 90000);
+    })();
+  </script>
+  <script>
+    // Service Worker فلاتر را غیرفعال و پاک می‌کند. باعث می‌شد کاربر بعد از هر
+    // انتشار، نسخه‌ی قدیمیِ کش‌شده را ببیند (از جمله نسخه‌ی سفیدِ قبل از رفع باگ).
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (rs) {
+        rs.forEach(function (r) { r.unregister(); });
+      }).catch(function () {});
+    }
+    if (window.caches && caches.keys) {
+      caches.keys().then(function (ks) {
+        ks.forEach(function (k) { caches.delete(k); });
+      }).catch(function () {});
+    }
+  </script>
+
+  <div id="nb-help">
+    <div class="box">
+      <h3>نصب نیم‌باز روی گوشی</h3>
+      <span id="nb-help-text"></span>
+      <button type="button" id="nb-help-close">باشه</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var help = document.getElementById('nb-help');
+      var helpText = document.getElementById('nb-help-text');
+      var deferred = null;
+
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferred = e;
+      });
+      window.addEventListener('appinstalled', function () { deferred = null; });
+
+      function ios() {
+        var ua = navigator.userAgent || '';
+        return /iPad|iPhone|iPod/.test(ua)
+          || (ua.indexOf('Mac') !== -1 && 'ontouchend' in document);
+      }
+      function android() {
+        return /android/i.test(navigator.userAgent || '');
+      }
+
+      var shareIcon = '<svg class="ic" viewBox="0 0 24 24" fill="none" '
+        + 'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+        + 'stroke-linejoin="round"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/>'
+        + '<path d="M6 12v7a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-7"/></svg>';
+      var addIcon = '<svg class="ic" viewBox="0 0 24 24" fill="none" '
+        + 'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+        + 'stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/>'
+        + '<path d="M12 8v8M8 12h8"/></svg>';
+
+      var dotsIcon = '<svg class="ic" viewBox="0 0 24 24" fill="currentColor">'
+        + '<circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/>'
+        + '<circle cx="12" cy="19" r="2"/></svg>';
+
+      function showHelp() {
+        helpText.innerHTML = ios()
+          ? '<ol>'
+            + '<li>پایینِ وسطِ صفحه، دکمه‌ی <b>«اشتراک‌گذاری»</b> را بزنید'
+            + ' (این علامت: ' + shareIcon + ' — مربع با یک فلش رو به بالا).</li>'
+            + '<li>در فهرستی که باز می‌شود، کمی پایین بروید و روی'
+            + ' <b>«Add to Home Screen»</b> بزنید (' + addIcon + ').</li>'
+            + '<li>صفحه‌ای باز می‌شود؛ بالا سمت راست روی <b>«Add»</b> بزنید.'
+            + ' آیکون نیم‌باز به صفحه‌ی گوشی‌تان اضافه می‌شود.</li>'
+            + '</ol>'
+          : '<div style="background:#f3e8fb;border-radius:10px;padding:8px 10px;'
+            + 'margin-bottom:10px;font-size:13px">اگر همین حالا یک پیام «<b>نصب</b>» یا'
+            + ' «<b>Install</b>» پایین یا بالای صفحه دیدید، فقط روی همان بزنید — تمام.</div>'
+            + 'در غیر این صورت:'
+            + '<ol>'
+            + '<li>منوی مرورگر را باز کنید'
+            + ' (گوشه‌ی بالای صفحه — دکمه‌ی سه‌نقطه ' + dotsIcon + ').</li>'
+            + '<li>در فهرست، گزینه‌ی <b>«Add to Home screen»</b> /'
+            + ' <b>«افزودن به صفحه اصلی»</b> (یا <b>«Install app»</b> /'
+            + ' <b>«نصب برنامه»</b>) را بزنید.</li>'
+            + '<li>روی <b>«Add»</b> / <b>«افزودن»</b> بزنید تا آیکون نیم‌باز'
+            + ' به صفحه‌ی گوشی‌تان اضافه شود.</li>'
+            + '</ol>';
+        help.style.display = 'flex';
+      }
+      document.getElementById('nb-help-close').addEventListener('click', function () {
+        help.style.display = 'none';
+      });
+      help.addEventListener('click', function (e) {
+        if (e.target === help) help.style.display = 'none';
+      });
+
+      // API که کد فلاتر صدا می‌زند
+      window.nbPwa = {
+        // آیا مرورگر اندروید است؟ (برای نشان‌دادن دکمه‌ی دانلود اپلیکیشن)
+        isAndroid: function () {
+          try { return android(); } catch (e) { return false; }
+        },
+        // آیا اصلاً پیشنهاد نصب معنا دارد؟ (فقط مرورگر موبایل و هنوز نصب نشده)
+        canOffer: function () {
+          try {
+            var standalone = (window.matchMedia
+                && window.matchMedia('(display-mode: standalone)').matches)
+              || window.navigator.standalone === true;
+            if (standalone) return false;
+            var coarse = window.matchMedia
+              && window.matchMedia('(pointer: coarse)').matches;
+            // هر گوشی اندروید یا آیفون که هنوز نصب نکرده — حتی اگر مرورگر
+            // نوع اشاره‌گر را درست گزارش نکند.
+            return !!coarse || ios() || android();
+          } catch (e) { return false; }
+        },
+        // نصب روی گوشی: اگر مرورگر پنجره‌ی خودکار داشت از آن استفاده کن،
+        // وگرنه راهنمای «افزودن به صفحه اصلی» (اندروید و آیفون) را نشان بده.
+        install: function () {
+          if (deferred) {
+            deferred.prompt();
+            deferred.userChoice.then(function () { deferred = null; });
+          } else {
+            showHelp();
+          }
+        }
+      };
+    })();
+  </script>
+
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
