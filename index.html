@@ -117,14 +117,16 @@
   </div>
   <script>
     (function () {
-      var lastErr = '';
+      var errs = [];
       window.addEventListener('error', function (e) {
-        lastErr = (e && e.message) ? e.message : String(e);
-        if (e && e.filename) lastErr += ' @ ' + e.filename.split('/').pop();
+        var m = (e && e.message) ? e.message : String(e);
+        if (e && e.filename) m += ' @' + e.filename.split('/').pop();
+        errs.push(m);
       });
       window.addEventListener('unhandledrejection', function (e) {
-        lastErr = 'promise: ' + ((e && e.reason && e.reason.message) || (e && e.reason) || 'unknown');
+        errs.push('promise: ' + ((e && e.reason && e.reason.message) || (e && e.reason) || '?'));
       });
+      window.__nbStage = 'html';
       var done = false;
       var t = setInterval(function () {
         if (document.querySelector('flt-glass-pane') || document.querySelector('flutter-view')) {
@@ -134,14 +136,32 @@
           clearInterval(t);
         }
       }, 200);
-      // اگر بعد از ۲۵ ثانیه هنوز بالا نیامده، پیام و دکمه‌ی تلاش دوباره نشان بده
       setTimeout(function () {
         if (done) return;
         clearInterval(t);
         var sp = document.getElementById('nb-sp'); if (sp) sp.style.display = 'none';
-        document.getElementById('nb-msg').textContent = 'بارگذاری بیش از حد طول کشید. اینترنت را بررسی کنید و دوباره تلاش کنید.';
+        document.getElementById('nb-msg').textContent = 'بارگذاری کامل نشد. لطفاً از این صفحه عکس بگیرید و برای پشتیبانی بفرستید:';
+        // گزارش تشخیصی
+        var got = {};
+        try {
+          performance.getEntriesByType('resource').forEach(function (r) {
+            var n = r.name.split('/').pop().split('?')[0];
+            if (/dart\.js|bootstrap|canvaskit|skwasm|\.wasm|\.ttf/.test(n)) got[n] = Math.round(r.transferSize / 1024) + 'k/' + Math.round(r.duration) + 'ms';
+          });
+        } catch (e) {}
+        var wgl = '';
+        try { var c = document.createElement('canvas'); wgl = c.getContext('webgl2') ? 'gl2' : (c.getContext('webgl') ? 'gl1' : 'none'); } catch (e) { wgl = 'err'; }
+        var diag = [
+          'stage=' + window.__nbStage,
+          '_flutter=' + (typeof window._flutter),
+          'canvasKit=' + (typeof window.flutterCanvasKit),
+          'webgl=' + wgl,
+          'files=' + JSON.stringify(got),
+          'errs=' + (errs.slice(0, 3).join(' | ') || 'none'),
+          'ua=' + navigator.userAgent
+        ].join('\n');
         var er = document.getElementById('nb-err');
-        if (lastErr && er) { er.textContent = lastErr.slice(0, 240); er.style.display = 'block'; }
+        if (er) { er.textContent = diag; er.style.display = 'block'; er.style.whiteSpace = 'pre-wrap'; er.style.textAlign = 'left'; }
         var rb = document.getElementById('nb-retry'); if (rb) rb.style.display = 'block';
       }, 25000);
     })();
