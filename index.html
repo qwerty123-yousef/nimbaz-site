@@ -82,6 +82,21 @@
   </style>
 </head>
 <body dir="rtl">
+  <script>
+    // Service Worker فلاتر را غیرفعال و پاک می‌کند. باعث می‌شد کاربر بعد از هر
+    // انتشار، نسخه‌ی قدیمیِ کش‌شده را ببیند (از جمله نسخه‌ی سفیدِ قبل از رفع باگ).
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (rs) {
+        rs.forEach(function (r) { r.unregister(); });
+      }).catch(function () {});
+    }
+    if (window.caches && caches.keys) {
+      caches.keys().then(function (ks) {
+        ks.forEach(function (k) { caches.delete(k); });
+      }).catch(function () {});
+    }
+  </script>
+
   <div id="nb-help">
     <div class="box">
       <h3>نصب نیم‌باز روی گوشی</h3>
