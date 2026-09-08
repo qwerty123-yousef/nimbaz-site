@@ -1,69 +1,195 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
-<meta name="referrer" content="no-referrer">
-<title>نیم‌باز | سایت نیازمندی‌ها و آگهی رایگان</title>
-<meta name="description" content="نیم‌باز یک اپلیکیشن ثبت و مشاهده آگهی رایگان است؛ خرید و فروش کالا، خدمات و املاک به‌صورت محلی.">
-<link rel="stylesheet" href="style.css">
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="نیم‌باز - خرید و فروش و آگهی">
+  <meta name="theme-color" content="#000000">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="نیم‌باز">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>نیم‌باز</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    #nb-help {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      display: none;
+      background: rgba(0,0,0,0.55);
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    #nb-help .box {
+      background: #fff;
+      color: #1f2933;
+      max-width: 420px;
+      width: 100%;
+      border-radius: 16px;
+      padding: 22px 20px 24px;
+      font-family: Tahoma, sans-serif;
+      direction: rtl;
+      line-height: 2.1;
+      font-size: 14px;
+    }
+    #nb-help h3 { margin: 0 0 8px; color: #6a1b9a; font-size: 16px; }
+    #nb-help b { color: #6a1b9a; }
+    #nb-help .ic {
+      display: inline-flex;
+      vertical-align: middle;
+      width: 22px; height: 22px;
+      margin: 0 2px;
+      color: #0a84ff;
+    }
+    #nb-help ol { margin: 6px 0 0; padding-inline-start: 20px; }
+    #nb-help li { margin-bottom: 6px; }
+    #nb-help button {
+      margin-top: 16px;
+      width: 100%;
+      background: #6a1b9a;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 20px;
+      font-family: Tahoma, sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body>
-<header>
-  <div class="header-inner">
-    <a href="index.html" class="logo">نیم‌باز</a>
-    <nav>
-      <a href="index.html">خانه</a>
-      <a href="about.html">درباره ما</a>
-      <a href="guide.html">راهنما</a>
-      <a href="terms.html">قوانین</a>
-      <a href="privacy.html">حریم خصوصی</a>
-      <a href="contact.html">تماس با ما</a>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <section class="card hero">
-    <h1>نیم‌باز؛ آگهی رایگان، خرید و فروش محلی</h1>
-    <p>در نیم‌باز می‌توانید کالا، خدمات و املاک خود را به‌صورت رایگان آگهی کنید و آگهی‌های شهر خود را ببینید. تماس مستقیم با آگهی‌دهنده، بدون واسطه.</p>
-    <div class="hero-actions">
-      <a href="guide.html" class="btn">راهنمای استفاده</a>
-      <a href="nimbaz.apk" class="btn btn-download" download>دانلود نیم‌باز</a>
-      <span class="btn btn-soon">نسخه تحت وب<small>به‌زودی</small></span>
+<body dir="rtl">
+  <div id="nb-help">
+    <div class="box">
+      <h3>نصب نیم‌باز روی گوشی</h3>
+      <span id="nb-help-text"></span>
+      <button type="button" id="nb-help-close">باشه</button>
     </div>
-  </section>
-
-  <section class="card">
-    <h2>نیم‌باز چه کاری انجام می‌دهد؟</h2>
-    <ul>
-      <li>ثبت آگهی رایگان برای فروش یا اجاره کالا، ملک و ارائه خدمات</li>
-      <li>مشاهده آگهی‌ها بر اساس شهر و استان</li>
-      <li>جستجوی آگهی بر اساس عنوان و توضیحات</li>
-      <li>تماس تلفنی مستقیم با آگهی‌دهنده از داخل برنامه</li>
-      <li>مدیریت آگهی‌های شخصی و تمدید آن‌ها</li>
-    </ul>
-  </section>
-
-  <section class="card">
-    <h2>ورود و ثبت‌نام</h2>
-    <p>ورود به نیم‌باز فقط با شماره موبایل و کد تأیید پیامکی انجام می‌شود. هیچ رمز عبوری لازم نیست و اطلاعات هویتی دیگری درخواست نمی‌شود.</p>
-  </section>
-
-  <section class="card">
-    <h2>دریافت برنامه</h2>
-    <p>برنامه نیم‌باز مخصوص گوشی‌های اندروید است. برای نصب، فایل زیر را دانلود و اجرا کنید.</p>
-    <p><a href="nimbaz.apk" class="btn btn-download" download>دانلود نیم‌باز (اندروید)</a></p>
-    <p><small>نسخه‌ی تحت وب به‌زودی اضافه می‌شود.</small></p>
-  </section>
-</main>
-
-<footer>
-  <div class="footer-inner">
-    <p>© نیم‌باز — همه حقوق محفوظ است.</p>
-    <p><a href="terms.html">قوانین و مقررات</a> · <a href="privacy.html">حریم خصوصی</a> · <a href="contact.html">تماس با ما</a></p>
   </div>
-</footer>
+
+  <script>
+    (function () {
+      var help = document.getElementById('nb-help');
+      var helpText = document.getElementById('nb-help-text');
+      var deferred = null;
+
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferred = e;
+      });
+      window.addEventListener('appinstalled', function () { deferred = null; });
+
+      function ios() {
+        var ua = navigator.userAgent || '';
+        return /iPad|iPhone|iPod/.test(ua)
+          || (ua.indexOf('Mac') !== -1 && 'ontouchend' in document);
+      }
+      function android() {
+        return /android/i.test(navigator.userAgent || '');
+      }
+
+      var shareIcon = '<svg class="ic" viewBox="0 0 24 24" fill="none" '
+        + 'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+        + 'stroke-linejoin="round"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/>'
+        + '<path d="M6 12v7a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-7"/></svg>';
+      var addIcon = '<svg class="ic" viewBox="0 0 24 24" fill="none" '
+        + 'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+        + 'stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/>'
+        + '<path d="M12 8v8M8 12h8"/></svg>';
+
+      var dotsIcon = '<svg class="ic" viewBox="0 0 24 24" fill="currentColor">'
+        + '<circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/>'
+        + '<circle cx="12" cy="19" r="2"/></svg>';
+
+      function showHelp() {
+        helpText.innerHTML = ios()
+          ? '<ol>'
+            + '<li>پایینِ وسطِ صفحه، دکمه‌ی <b>«اشتراک‌گذاری»</b> را بزنید'
+            + ' (این علامت: ' + shareIcon + ' — مربع با یک فلش رو به بالا).</li>'
+            + '<li>در فهرستی که باز می‌شود، کمی پایین بروید و روی'
+            + ' <b>«Add to Home Screen»</b> بزنید (' + addIcon + ').</li>'
+            + '<li>صفحه‌ای باز می‌شود؛ بالا سمت راست روی <b>«Add»</b> بزنید.'
+            + ' آیکون نیم‌باز به صفحه‌ی گوشی‌تان اضافه می‌شود.</li>'
+            + '</ol>'
+          : '<div style="background:#f3e8fb;border-radius:10px;padding:8px 10px;'
+            + 'margin-bottom:10px;font-size:13px">اگر همین حالا یک پیام «<b>نصب</b>» یا'
+            + ' «<b>Install</b>» پایین یا بالای صفحه دیدید، فقط روی همان بزنید — تمام.</div>'
+            + 'در غیر این صورت:'
+            + '<ol>'
+            + '<li>منوی مرورگر را باز کنید'
+            + ' (گوشه‌ی بالای صفحه — دکمه‌ی سه‌نقطه ' + dotsIcon + ').</li>'
+            + '<li>در فهرست، گزینه‌ی <b>«Add to Home screen»</b> /'
+            + ' <b>«افزودن به صفحه اصلی»</b> (یا <b>«Install app»</b> /'
+            + ' <b>«نصب برنامه»</b>) را بزنید.</li>'
+            + '<li>روی <b>«Add»</b> / <b>«افزودن»</b> بزنید تا آیکون نیم‌باز'
+            + ' به صفحه‌ی گوشی‌تان اضافه شود.</li>'
+            + '</ol>';
+        help.style.display = 'flex';
+      }
+      document.getElementById('nb-help-close').addEventListener('click', function () {
+        help.style.display = 'none';
+      });
+      help.addEventListener('click', function (e) {
+        if (e.target === help) help.style.display = 'none';
+      });
+
+      // API که کد فلاتر صدا می‌زند
+      window.nbPwa = {
+        // آیا مرورگر اندروید است؟ (برای نشان‌دادن دکمه‌ی دانلود اپلیکیشن)
+        isAndroid: function () {
+          try { return android(); } catch (e) { return false; }
+        },
+        // آیا اصلاً پیشنهاد نصب معنا دارد؟ (فقط مرورگر موبایل و هنوز نصب نشده)
+        canOffer: function () {
+          try {
+            var standalone = (window.matchMedia
+                && window.matchMedia('(display-mode: standalone)').matches)
+              || window.navigator.standalone === true;
+            if (standalone) return false;
+            var coarse = window.matchMedia
+              && window.matchMedia('(pointer: coarse)').matches;
+            // هر گوشی اندروید یا آیفون که هنوز نصب نکرده — حتی اگر مرورگر
+            // نوع اشاره‌گر را درست گزارش نکند.
+            return !!coarse || ios() || android();
+          } catch (e) { return false; }
+        },
+        // نصب روی گوشی: اگر مرورگر پنجره‌ی خودکار داشت از آن استفاده کن،
+        // وگرنه راهنمای «افزودن به صفحه اصلی» (اندروید و آیفون) را نشان بده.
+        install: function () {
+          if (deferred) {
+            deferred.prompt();
+            deferred.userChoice.then(function () { deferred = null; });
+          } else {
+            showHelp();
+          }
+        }
+      };
+    })();
+  </script>
+
+  <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

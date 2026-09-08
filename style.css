@@ -107,12 +107,6 @@ h2 { color: var(--brand); font-size: 19px; margin-top: 28px; }
 
 ul { padding-right: 22px; }
 
-.card.warn {
-  background: #fff8e1;
-  border-color: #ffe082;
-}
-.card.warn h2 { color: #b26a00; margin-top: 0; }
-
 .contact-row {
   display: flex;
   gap: 10px;
@@ -138,3 +132,11 @@ footer {
 }
 
 .footer-inner a { color: var(--brand); text-decoration: none; }
+
+.back-to-app {
+  display: inline-block;
+  margin-top: 4px;
+  color: var(--brand);
+  text-decoration: none;
+  font-size: 14px;
+}
