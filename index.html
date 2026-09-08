@@ -33,7 +33,33 @@
   <title>نیم‌باز</title>
   <link rel="manifest" href="manifest.json">
 
+  <!-- زودتر شروع به دانلود فایل‌های اصلی کن -->
+  <link rel="preload" href="flutter_bootstrap.js" as="script">
+  <link rel="preload" href="main.dart.js" as="script">
+
   <style>
+    #nb-loading {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      background: #ffffff;
+      font-family: Tahoma, sans-serif;
+    }
+    #nb-loading img { width: 96px; height: 96px; border-radius: 20px; }
+    #nb-loading .sp {
+      width: 34px; height: 34px;
+      border: 3px solid #e6d8f2;
+      border-top-color: #6a1b9a;
+      border-radius: 50%;
+      animation: nbspin 0.9s linear infinite;
+    }
+    #nb-loading p { margin: 0; color: #6a1b9a; font-size: 14px; }
+    @keyframes nbspin { to { transform: rotate(360deg); } }
     #nb-help {
       position: fixed;
       inset: 0;
@@ -82,6 +108,24 @@
   </style>
 </head>
 <body dir="rtl">
+  <div id="nb-loading">
+    <img src="icons/Icon-192.png" alt="نیم‌باز">
+    <div class="sp"></div>
+    <p>در حال بارگذاری نیم‌باز…</p>
+  </div>
+  <script>
+    // به‌محض این‌که فلاتر صفحه را رسم کرد، صفحه‌ی بارگذاری حذف می‌شود.
+    (function () {
+      var t = setInterval(function () {
+        if (document.querySelector('flt-glass-pane') || document.querySelector('flutter-view')) {
+          var el = document.getElementById('nb-loading');
+          if (el) { el.style.transition = 'opacity .3s'; el.style.opacity = '0'; setTimeout(function () { el.remove(); }, 350); }
+          clearInterval(t);
+        }
+      }, 200);
+      setTimeout(function () { clearInterval(t); var el = document.getElementById('nb-loading'); if (el) el.remove(); }, 30000);
+    })();
+  </script>
   <script>
     // Service Worker فلاتر را غیرفعال و پاک می‌کند. باعث می‌شد کاربر بعد از هر
     // انتشار، نسخه‌ی قدیمیِ کش‌شده را ببیند (از جمله نسخه‌ی سفیدِ قبل از رفع باگ).
