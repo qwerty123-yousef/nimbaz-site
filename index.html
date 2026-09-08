@@ -112,8 +112,13 @@
     <img src="icons/Icon-192.png" alt="نیم‌باز">
     <div class="sp" id="nb-sp"></div>
     <p id="nb-msg">در حال بارگذاری نیم‌باز…</p>
-    <p id="nb-err" style="color:#b00020;font-size:11px;max-width:300px;text-align:center;direction:ltr;display:none"></p>
+    <p id="nb-hint" style="display:none;color:#444;font-size:13px;max-width:320px;text-align:center;line-height:2">
+      اگر بالا نیامد، احتمالاً مرورگر یا گوشی شما قدیمی است.<br>
+      لطفاً با گوشی جدیدتر یا مرورگر <b>کروم</b> امتحان کنید.
+    </p>
     <button id="nb-retry" style="display:none;background:#6a1b9a;color:#fff;border:none;border-radius:10px;padding:10px 24px;font-family:Tahoma;font-size:14px" onclick="location.reload()">تلاش دوباره</button>
+    <a id="nb-diagbtn" href="#" style="display:none;color:#999;font-size:11px;text-decoration:underline">جزئیات فنی</a>
+    <p id="nb-err" style="color:#b00020;font-size:10px;max-width:320px;text-align:left;direction:ltr;display:none;white-space:pre-wrap"></p>
   </div>
   <script>
     (function () {
@@ -142,13 +147,15 @@
         var m = document.getElementById('nb-msg');
         if (m) m.textContent = 'بار اول کمی طول می‌کشد، لطفاً صبر کنید…';
       }, 20000);
-      // بعد از ۹۰ ثانیه: گزارش تشخیصی + دکمه‌ی تلاش دوباره
+      // بعد از ۹۰ ثانیه: پیام دوستانه + دکمه‌ی تلاش دوباره (جزئیات فنی پنهان)
       setTimeout(function () {
         if (done) return;
         clearInterval(t);
         var sp = document.getElementById('nb-sp'); if (sp) sp.style.display = 'none';
-        document.getElementById('nb-msg').textContent = 'بارگذاری کامل نشد. لطفاً از این صفحه عکس بگیرید و برای پشتیبانی بفرستید:';
-        // گزارش تشخیصی
+        document.getElementById('nb-msg').textContent = 'نیم‌باز بالا نیامد';
+        document.getElementById('nb-hint').style.display = 'block';
+        var rb = document.getElementById('nb-retry'); if (rb) rb.style.display = 'block';
+        // گزارش تشخیصی — فقط پشت لینک «جزئیات فنی»
         var got = {};
         try {
           performance.getEntriesByType('resource').forEach(function (r) {
@@ -167,9 +174,12 @@
           'errs=' + (errs.slice(0, 3).join(' | ') || 'none'),
           'ua=' + navigator.userAgent
         ].join('\n');
+        var db = document.getElementById('nb-diagbtn');
         var er = document.getElementById('nb-err');
-        if (er) { er.textContent = diag; er.style.display = 'block'; er.style.whiteSpace = 'pre-wrap'; er.style.textAlign = 'left'; }
-        var rb = document.getElementById('nb-retry'); if (rb) rb.style.display = 'block';
+        if (db && er) {
+          db.style.display = 'block';
+          db.onclick = function (ev) { ev.preventDefault(); er.textContent = diag; er.style.display = (er.style.display === 'block' ? 'none' : 'block'); };
+        }
       }, 90000);
     })();
   </script>
