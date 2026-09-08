@@ -136,6 +136,13 @@
           clearInterval(t);
         }
       }, 200);
+      // بعد از ۲۰ ثانیه فقط پیام «کمی صبر کنید» — هنوز چرخ‌فلک می‌چرخد
+      setTimeout(function () {
+        if (done) return;
+        var m = document.getElementById('nb-msg');
+        if (m) m.textContent = 'بار اول کمی طول می‌کشد، لطفاً صبر کنید…';
+      }, 20000);
+      // بعد از ۹۰ ثانیه: گزارش تشخیصی + دکمه‌ی تلاش دوباره
       setTimeout(function () {
         if (done) return;
         clearInterval(t);
@@ -163,7 +170,7 @@
         var er = document.getElementById('nb-err');
         if (er) { er.textContent = diag; er.style.display = 'block'; er.style.whiteSpace = 'pre-wrap'; er.style.textAlign = 'left'; }
         var rb = document.getElementById('nb-retry'); if (rb) rb.style.display = 'block';
-      }, 25000);
+      }, 90000);
     })();
   </script>
   <script>
