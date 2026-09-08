@@ -110,20 +110,40 @@
 <body dir="rtl">
   <div id="nb-loading">
     <img src="icons/Icon-192.png" alt="نیم‌باز">
-    <div class="sp"></div>
-    <p>در حال بارگذاری نیم‌باز…</p>
+    <div class="sp" id="nb-sp"></div>
+    <p id="nb-msg">در حال بارگذاری نیم‌باز…</p>
+    <p id="nb-err" style="color:#b00020;font-size:11px;max-width:300px;text-align:center;direction:ltr;display:none"></p>
+    <button id="nb-retry" style="display:none;background:#6a1b9a;color:#fff;border:none;border-radius:10px;padding:10px 24px;font-family:Tahoma;font-size:14px" onclick="location.reload()">تلاش دوباره</button>
   </div>
   <script>
-    // به‌محض این‌که فلاتر صفحه را رسم کرد، صفحه‌ی بارگذاری حذف می‌شود.
     (function () {
+      var lastErr = '';
+      window.addEventListener('error', function (e) {
+        lastErr = (e && e.message) ? e.message : String(e);
+        if (e && e.filename) lastErr += ' @ ' + e.filename.split('/').pop();
+      });
+      window.addEventListener('unhandledrejection', function (e) {
+        lastErr = 'promise: ' + ((e && e.reason && e.reason.message) || (e && e.reason) || 'unknown');
+      });
+      var done = false;
       var t = setInterval(function () {
         if (document.querySelector('flt-glass-pane') || document.querySelector('flutter-view')) {
+          done = true;
           var el = document.getElementById('nb-loading');
           if (el) { el.style.transition = 'opacity .3s'; el.style.opacity = '0'; setTimeout(function () { el.remove(); }, 350); }
           clearInterval(t);
         }
       }, 200);
-      setTimeout(function () { clearInterval(t); var el = document.getElementById('nb-loading'); if (el) el.remove(); }, 30000);
+      // اگر بعد از ۲۵ ثانیه هنوز بالا نیامده، پیام و دکمه‌ی تلاش دوباره نشان بده
+      setTimeout(function () {
+        if (done) return;
+        clearInterval(t);
+        var sp = document.getElementById('nb-sp'); if (sp) sp.style.display = 'none';
+        document.getElementById('nb-msg').textContent = 'بارگذاری بیش از حد طول کشید. اینترنت را بررسی کنید و دوباره تلاش کنید.';
+        var er = document.getElementById('nb-err');
+        if (lastErr && er) { er.textContent = lastErr.slice(0, 240); er.style.display = 'block'; }
+        var rb = document.getElementById('nb-retry'); if (rb) rb.style.display = 'block';
+      }, 25000);
     })();
   </script>
   <script>
