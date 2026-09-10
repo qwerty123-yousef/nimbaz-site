@@ -1,3 +1,0 @@
-:HL["/_next/static/chunks/338gy0eh8pefl.css","style"]
-:HL["/icon-192.png","image"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}},"staleTime":300,"buildId":"18-CdI088irdPUabsUWpE"}
