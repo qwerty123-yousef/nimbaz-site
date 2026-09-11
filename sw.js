@@ -1,5 +1,5 @@
-/* نیم‌باز sw — mtvmvml9 */
-const C = "nb-mtvmvml9";
+/* نیم‌باز sw — mtxearrj */
+const C = "nb-mtxearrj";
 const PRE = ["/","/index.html","/ad.html","/nb.css","/js/home.js","/js/ad.js","/iran.json","/favicon.png","/manifest.webmanifest","/fonts/Vazirmatn-Regular.woff2","/fonts/Vazirmatn-Bold.woff2"];
 self.addEventListener("install", (e) => {
   self.skipWaiting();
