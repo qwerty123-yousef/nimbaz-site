@@ -1,5 +1,5 @@
-/* نیم‌باز sw — mu2yw5uc */
-const C = "nb-mu2yw5uc";
+/* نیم‌باز sw — mu30ggof */
+const C = "nb-mu30ggof";
 const PRE = ["/","/index.html","/ad.html","/nb.css","/js/home.js","/js/ad.js","/iran.json","/favicon.png","/manifest.webmanifest","/fonts/Vazirmatn-Regular.woff2","/fonts/Vazirmatn-Bold.woff2"];
 self.addEventListener("install", (e) => {
   self.skipWaiting();
